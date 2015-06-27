@@ -102,11 +102,13 @@ class SK_WPRecentPostsShortcode
         ?>
         <div class="<?= $this->classes; ?>">
             <a href="<?= $permalink; ?>">
-            <div class="bg-image" style="background-image: url( '<?= $thumbSrc[ 0 ]; ?>');">
-                <div class="recent-post-title">
-                    <?= get_the_title(); ?>
+                <div class="bg-image" style="background-image: url( '<?= $thumbSrc[ 0 ]; ?>');">
+                    <div class="bg-gradient">
+                        <div class="recent-post-title">
+                            <?= get_the_title(); ?>
+                        </div>
+                    </div>
                 </div>
-            </div>
             </a>
         </div>
         <?php
