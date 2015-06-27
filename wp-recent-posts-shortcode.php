@@ -27,8 +27,12 @@ class SK_WPRecentPostsShortcode
 
     public function shortcode( $atts )
     {
+        $post_id = get_the_ID();
+        $currentCategory = get_the_category( $post_id );
 
-        $currentCategory = get_the_category( get_the_ID() );
+        $args = array(
+            'post__not_in' => array( $post_id )
+        );
 
         $atts = shortcode_atts(
             array(
@@ -39,9 +43,6 @@ class SK_WPRecentPostsShortcode
             $atts,
             'wp_recent_posts'
         );
-        $args = array(
-            'posts_per_page' => $atts[ 'posts_per_page' ]
-        );
 
         if( $atts[ 'current_post_category' ] === 'true' ) {
             $currentCategory = get_the_category( get_the_ID() );
@@ -50,6 +51,7 @@ class SK_WPRecentPostsShortcode
 
             $args[ 'category__in' ] = array( $currentCategory[ 0 ]->term_id );
         }
+        unset( $atts[ 'current_post_category' ] );
 
         if( $atts[ 'all_post_categories' ] === 'true' ) {
             $currentCategory = get_the_category( get_the_ID() );
@@ -63,7 +65,9 @@ class SK_WPRecentPostsShortcode
 
             $args[ 'category__in' ] = $cats;
         }
+        unset( $atts[ 'all_post_categories' ] );
 
+        $args = array_merge( $atts, $args );
         $recentPosts = new WP_Query( $args );
         $this->postsPerPage = $args[ 'posts_per_page' ];
 
